@@ -329,24 +329,6 @@ class DefectDojoAPIv2(object):
 
         return self._request('POST', 'products/', data=data)
 
-    def create_product(self, name, description, prod_type):
-        """Creates a product with the given properties.
-
-        :param name: Product name.
-        :param description: Product description..
-        :param prod_type: Product type.
-
-        """
-
-        data = {
-            'name': name,
-            'description': description,
-            'prod_type': prod_type
-        }
-
-        return self._request('POST', 'products/', data=data)
-
-
     def set_product(self, product_id, name=None, description=None, prod_type=None):
         """Updates a product with the given properties.
 
@@ -436,7 +418,7 @@ class DefectDojoAPIv2(object):
         data = {}
 
         if engagement_id:
-            data['engagement'] = self.engagement_id
+            data['engagement'] = engagement_id
 
         if test_type:
             data['test_type'] = test_type
@@ -608,7 +590,7 @@ class DefectDojoAPIv2(object):
 
     def set_finding(self, finding_id, product_id, engagement_id, test_id, title=None, description=None, severity=None,
         cwe=None, date=None, user_id=None, impact=None, active=None, verified=None,
-        mitigation=None, references=None):
+        mitigation=None, references=None, build=None):
 
         """Updates a finding with the given properties.
 
@@ -845,7 +827,7 @@ class DefectDojoAPIv2(object):
         return self._request('GET', 'credential_mappings/' + str(cred_mapping_id) + '/')
 
     ##### App Analysis API #####
-    def list_app_analysis(self, id=None, product_id=None, name=None, limit=20):
+    def list_app_analysis(self, id=None, product_id=None, name=None, language_name=None, limit=20):
         """Retrieves source code languages.
 
         :param id: Search by lanaguage id.

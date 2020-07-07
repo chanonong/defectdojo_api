@@ -1,9 +1,7 @@
 import json
 import requests
 import requests.exceptions
-import requests.packages.urllib3
-
-requests.packages.urllib3.add_stderr_logger()
+import urllib3
 
 version = "1.1.6.dev2"
 
@@ -44,7 +42,7 @@ class DefectDojoAPIv2(object):
         self.debug = debug  # Prints request and response information.
 
         if not self.verify_ssl:
-            requests.packages.urllib3.disable_warnings()  # Disabling SSL warning messages if verification is disabled.
+            urllib3.disable_warnings()  # Disabling SSL warning messages if verification is disabled.
 
     def version_url(self):
         """Returns the DefectDojo API version.

@@ -1191,7 +1191,22 @@ class DefectDojoResponse(object):
         return int(self.data["id"])
 
     def count(self):
+        """
+        Returns the size of the result in the response
+        """
         return self.data["count"]
+
+    def next(self):
+        """
+        Returns the next url for fetching (pagination)
+        """
+        return self.data["next"]
+
+    def results(self):
+        """
+        Returns results from the response
+        """
+        return self.data["results"]
 
     def data_json(self, pretty=False):
         """Returns the data as a valid JSON string."""

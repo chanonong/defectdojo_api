@@ -445,6 +445,12 @@ class DefectDojoAPIv2(object):
 
         return self._request('PUT', 'products/' + str(product_id) + '/', data=data)
 
+    def generate_product_report(self, product_id):
+        """
+        Generate a product report using the given product id.
+        :param product_id: product id.
+        """
+        return self._request('POST', 'products/' + str(product_id) + '/generate_report/')
 
     ###### Test API #######
     def list_tests(self, name=None, engagement_in=None, limit=20, offset=0):

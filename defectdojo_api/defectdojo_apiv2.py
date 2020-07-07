@@ -278,6 +278,105 @@ class DefectDojoAPIv2(object):
 
         return self._request('PATCH', 'engagements/' + str(id) + '/', data=data)
 
+    ###### Metadata API ######
+    def list_metadata(self, product=None, endpoint=None, limit=20, offset=0):
+        """
+        Retrieve all metadata.
+
+        :param product: filter list of metadata by propduct
+        :param endpoint: filter list of metadata by endpoint
+        :param limit: limit of record to return
+        :param offset: offset of record to return
+        """
+        params = self._build_param_with_pagination(limit, offset)
+
+        if product:
+            params["product"] = product
+
+        if endpoint:
+            params["endpoint"] = endpoint
+
+        return self._request('GET', 'metadata/', params)
+    
+    def get_metadata(self, metadata_id):
+        """
+        Retrieves a metadata using the given metadata id.
+        :param metadata_id: Metadata identification.
+        """
+        return self._request('GET', 'metadata/' + str(metadata_id) + '/')
+
+    def create_metadata(self, name, value, product=None, endpoint=None):
+        """Creates a metadata with the given properties.
+
+        :param product: Metadata product id.
+        :param endpoint: Metadata endpoint id.
+        :param key: Metadata key.
+        :param value: Metadata value.
+
+        """
+        if not product and not endpoint:
+            raise Exception("Invalid Request")
+        elif product and endpoint:
+            raise Exception("Invalid Request")
+
+        data = {
+            'product': product,
+            'endpoint': endpoint,
+            'name': name,
+            'value': value
+        }
+
+        return self._request('POST', 'metadata/', data=data)
+
+    def delete_metadata(self, metadata_id):
+        raise Exception("Not Implement Exception")
+
+    def set_metadata(self, metadata_id, name, value, product=None, endpoint=None):
+        """Update a metadata with the given properties.
+
+        :param metadata_id: Metadata id.
+        :param name: Metadata name.
+        :param value: Metadata value.
+        :param product: Product Id.
+        :param endpoint: Endpoint Id.
+
+        """
+
+        current_metadata = self.get_metadata(metadata_id).data
+
+        data = {}
+
+        if name:
+            data['name'] = name
+
+        if value:
+            data['value'] = value
+
+        if product:
+            data['product'] = product
+        else:
+            data['product'] = current_metadata['product']
+
+        if endpoint:
+            data['endpoint'] = endpoint
+        else:
+            data['endpoint'] = current_metadata['endpoint']
+
+        return self._request('PUT', 'metadata/' + str(metadata_id) + '/', data=data)
+
+
+    ###### Endpoint API ######
+
+    def list_endpoints(self, limit=20, offset=0):
+        """Retrieves all the endpoints.
+
+        :param offset: offset of records to return.
+        :param limit: Number of records to return.
+
+        """
+        params = self._build_param_with_pagination(limit, offset)
+        return self._request('GET', 'endpoints/', params)
+
     ###### Product API #######
     def list_products(self, name=None, name_contains=None, limit=200, offset=0):
         """Retrieves all the products.

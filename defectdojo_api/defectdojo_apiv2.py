@@ -61,16 +61,14 @@ class DefectDojoAPIv2(object):
 
 
     ###### User API #######
-    def list_users(self, username=None, limit=20):
+    def list_users(self, username=None, limit=20, offset=0):
         """Retrieves all the users.
 
         :param username: Search by username.
         :param limit: Number of records to return.
 
         """
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if username:
             params['username'] = username
@@ -86,7 +84,7 @@ class DefectDojoAPIv2(object):
         return self._request('GET', 'users/' + str(user_id) + '/')
 
     ###### Engagements API #######
-    def list_engagements(self, status=None, product_id=None, name_contains=None,limit=20):
+    def list_engagements(self, status=None, product_id=None, name_contains=None, limit=20, offset=0):
         """Retrieves all the engagements.
 
         :param product_in: List of product ids (1,2).
@@ -95,9 +93,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if product_id:
             params['product'] = product_id
@@ -283,7 +279,7 @@ class DefectDojoAPIv2(object):
         return self._request('PATCH', 'engagements/' + str(id) + '/', data=data)
 
     ###### Product API #######
-    def list_products(self, name=None, name_contains=None, limit=200):
+    def list_products(self, name=None, name_contains=None, limit=200, offset=0):
         """Retrieves all the products.
 
         :param name: Search by product name.
@@ -292,9 +288,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if name:
             params['name'] = name
@@ -354,7 +348,7 @@ class DefectDojoAPIv2(object):
 
 
     ###### Test API #######
-    def list_tests(self, name=None, engagement_in=None, limit=20):
+    def list_tests(self, name=None, engagement_in=None, limit=20, offset=0):
         """Retrieves all the tests.
 
         :param name_contains: Search by product name.
@@ -362,9 +356,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if engagement_in:
             params['engagement__in'] = engagement_in
@@ -444,7 +436,7 @@ class DefectDojoAPIv2(object):
     ###### Findings API #######
     def list_findings(self, active=None, duplicate=None, mitigated=None, severity=None, verified=None, severity_lt=None,
         severity_gt=None, severity_contains=None, title_contains=None, url_contains=None, date_lt=None,
-        date_gt=None, date=None, product_id_in=None, engagement_id_in=None, test_id_in=None, build=None, limit=20):
+        date_gt=None, date=None, product_id_in=None, engagement_id_in=None, test_id_in=None, build=None, limit=20, offset=0):
 
         """Returns filtered list of findings.
 
@@ -469,9 +461,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if active:
             params['active'] = active
@@ -761,16 +751,14 @@ class DefectDojoAPIv2(object):
 
     ##### Credential API #####
 
-    def list_credentials(self, name=None, username=None, limit=20):
+    def list_credentials(self, name=None, username=None, limit=20, offset=0):
         """Retrieves all the globally configured credentials.
         :param name_contains: Search by credential name.
         :param username: Search by username
         :param limit: Number of records to return.
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if name:
             params['name__contains'] = name
@@ -780,7 +768,7 @@ class DefectDojoAPIv2(object):
 
         return self._request('GET', 'credentials/', params)
 
-    def get_credential(self, cred_id, limit=20):
+    def get_credential(self, cred_id):
         """
         Retrieves a credential using the given credential id.
         :param credential_id: Credential identification.
@@ -789,7 +777,7 @@ class DefectDojoAPIv2(object):
 
     ##### Credential Mapping API #####
 
-    def list_credential_mappings(self, name=None, product_id_in=None, engagement_id_in=None, test_id_in=None, finding_id_in=None, limit=20):
+    def list_credential_mappings(self, name=None, product_id_in=None, engagement_id_in=None, test_id_in=None, finding_id_in=None, limit=20, offset=0):
         """Retrieves mapped credentials.
 
         :param name_contains: Search by credential name.
@@ -798,9 +786,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if name:
             params['name'] = name
@@ -819,7 +805,7 @@ class DefectDojoAPIv2(object):
 
         return self._request('GET', 'credential_mappings/', params)
 
-    def get_credential_mapping(self, cred_mapping_id, limit=20):
+    def get_credential_mapping(self, cred_mapping_id):
         """
         Retrieves a credential using the given credential id.
         :param cred_mapping_id: Credential identification.
@@ -827,7 +813,7 @@ class DefectDojoAPIv2(object):
         return self._request('GET', 'credential_mappings/' + str(cred_mapping_id) + '/')
 
     ##### App Analysis API #####
-    def list_app_analysis(self, id=None, product_id=None, name=None, language_name=None, limit=20):
+    def list_app_analysis(self, id=None, product_id=None, name=None, language_name=None, limit=20, offset=0):
         """Retrieves source code languages.
 
         :param id: Search by lanaguage id.
@@ -837,9 +823,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if id:
             params['id'] = id
@@ -890,7 +874,7 @@ class DefectDojoAPIv2(object):
 
     ##### Language API #####
 
-    def list_languages(self, id=None, product_id=None, language_name=None, limit=20):
+    def list_languages(self, id=None, product_id=None, language_name=None, limit=20, offset=0):
         """Retrieves source code languages.
 
         :param id: Search by lanaguage id.
@@ -900,9 +884,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if id:
             params['id'] = id
@@ -958,7 +940,7 @@ class DefectDojoAPIv2(object):
             for language in languages.data["objects"]:
                 self.delete_language(self.get_id_from_url(language['resource_uri']))
 
-    def list_language_types(self, id=None, language_name=None, limit=20):
+    def list_language_types(self, id=None, language_name=None, limit=20, offset=0):
         """Retrieves source code languages.
 
         :param id: Search by lanaguage id.
@@ -967,9 +949,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if id:
             params['id'] = id
@@ -981,7 +961,7 @@ class DefectDojoAPIv2(object):
 
     ###### Tool API #######
 
-    def list_tool_types(self, resource_id=None, name=None, limit=20):
+    def list_tool_types(self, resource_id=None, name=None, limit=20, offset=0):
         """Retrieves all the tool types.
 
         :param name_contains: Search by tool type name.
@@ -989,9 +969,7 @@ class DefectDojoAPIv2(object):
 
         """
 
-        params  = {}
-        if limit:
-            params['limit'] = limit
+        params  = self._build_param_with_pagination(limit, offset)
 
         if resource_id:
             params['id'] = resource_id
@@ -1082,6 +1060,19 @@ class DefectDojoAPIv2(object):
                 index += 1
         else:
             params[str(param_name) + '[0].' + str(key)] = str(values)
+        return params
+
+    @staticmethod
+    def _build_param_with_pagination(limit, offset):
+        """
+        Build parameter dict with limit and offset for pagination
+        """
+        params = {}
+        
+        if limit:
+            params["limit"] = limit
+        if offset:
+            params["offset"] = offset
         return params
 
     def _request(self, method, url, params=None, data=None, files=None):
